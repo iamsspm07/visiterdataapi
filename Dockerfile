@@ -1,5 +1,8 @@
-FROM eclipse-temurin:17-jdk-alpine
-VOLUME /tmp
-COPY target/*.jar visitersdatabase.jar
-ENTRYPOINT ["java","-jar","/visitersdatabase.jar"]
-EXPOSE 1234
+FROM maven:3.8.5-openjdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
+
+FROM openjdk:17.0.1-jdk-slim
+COPY --from=build /target/VisitersDatabase-0.0.1-SNAPSHOT.jar VisitersDatabase.jar
+ENTRYPOINT ["java","-jar","/VisitersDatabase.jar"]
+EXPOSE 1234 
