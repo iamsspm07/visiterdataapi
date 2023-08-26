@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>NBBL VISITERS</title>
+	<style>
+		body {
+			font-family: 'Times New Roman', Times, serif;
+			background-color: #efefef;
+			color: #1a3281;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+			font-size: 20px;
+		}
+
+		.form-container {
+			background-color: #f47920;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 2px 4px #1a3281;
+			width: 400px;
+		}
+
+		.form-container h1 {
+			margin-bottom: 20px;
+		}
+
+		.form-group {
+			margin-bottom: 15px;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: bold;
+		}
+
+		.form-group input {
+			width: 90%;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+		}
+
+		.submit-button {
+			background-color: #007bff;
+			color: #ffffff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 3px;
+			cursor: pointer;
+
+		}
+		
+		table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid rgb(255, 0, 128);
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            color: #0056b3;
+        }
+
+        th {
+            background-color: #f47920;
+        }
+		
+		 .visitors-list {
+            margin-top: 200px;
+            margin-left: 20px;
+            border: #ccc;
+            padding-bottom: 100px;
+        }
+
+		.submit-button:hover {
+			background-color: #0056b3;
+		}
+	</style>
+</head>
+
+<body>
+
+
+	<div class="form-container">
+
+		<h1 style="color: #1a3281; text-align: center; font-size: 40px;">NBBL Visitor Form</h1>
+		<form id="visitorForm">
+			<div class="form-group">
+				<label for="visiternumber">Visitor Number:</label>
+				<input type="number" id="visiternumber" name="visiternumber" required>
+			</div>
+			<div class="form-group">
+				<label for="visitername">Visitor Name:</label>
+				<input type="text" id="visitername" name="visitername" required>
+			</div>
+			<div class="form-group">
+				<label for="visiteremail">Visitor Email:</label>
+				<input type="email" id="visiteremail" name="visiteremail" required>
+			</div>
+			<div class="form-group">
+				<label for="visiterdesignation">Visitor Designation:</label>
+				<input type="text" id="visiterdesignation" name="visiterdesignation" required>
+			</div>
+			<div class="form-group">
+				<label for="visitercompany">Visitor Company:</label>
+				<input type="text" id="visitercompany" name="visitercompany" required>
+			</div>
+			<button class="submit-button" type="submit">Submit</button>
+			<button class="submit-button" id="displayVisitorsButton">Display Visitors</button>
+		</form>
+	</div>
+	
+	<div class="visitors-list" style="padding-left: 10px;">
+		<h2 style="color: #0056b3; text-align: center;">Visitors List</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Visitor Number</th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Designation</th>
+					<th>Company</th>
+				</tr>
+			</thead>
+			<tbody id="visitorsTableBody">
+			</tbody>
+		</table>
+	</div>
+
+	<script>
+		document.getElementById("visitorForm").addEventListener("submit", function (event) {
+			event.preventDefault();
+			saveVisitor();
+		});
+
+		document.getElementById("displayVisitorsButton").addEventListener("click", function (event) {
+			event.preventDefault();
+			fetchAllVisitors();
+		});
+
+		function saveVisitor() {
+			const visitor = {
+				visiternumber: document.getElementById("visiternumber").value,
+				visitername: document.getElementById("visitername").value,
+				visiteremail: document.getElementById("visiteremail").value,
+				visiterdesignation: document.getElementById("visiterdesignation").value,
+				visitercompany: document.getElementById("visitercompany").value
+			};
+
+			fetch('/visiter-api/create', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(visitor)
+			})
+				.then(response => response.json())
+				.then(data => {
+					console.log('Visitor saved:', data);
+					alert('Visitor details saved successfully!');
+				})
+				.catch(error => {
+					console.error('Error saving visitor:', error);
+					alert('An error occurred while saving visitor details.');
+				});
+		}
+
+
+		function fetchAllVisitors() {
+			fetch('/visiter-api/displayVisiters')
+				.then(response => response.json())
+				.then(data => {
+					console.log('All Visitors:', data);
+					displayVisitors(data); 
+				})
+				.catch(error => {
+					console.error('Error fetching visitors:', error);
+				});
+		}
+
+		function displayVisitors(visitors) {
+			const visitorsTableBody = document.getElementById("visitorsTableBody");
+
+			visitorsTableBody.innerHTML = ""; 
+
+			visitors.forEach(visitor => {
+				const row = `
+            <tr>
+                <td>${visitor.visiternumber}</td>
+                <td>${visitor.visitername}</td>
+                <td>${visitor.visiteremail}</td>
+                <td>${visitor.visiterdesignation}</td>
+                <td>${visitor.visitercompany}</td>
+            </tr>
+        `;
+				visitorsTableBody.innerHTML += row;
+			});
+		}
+
+	</script>
+</body>
+
+</html>
