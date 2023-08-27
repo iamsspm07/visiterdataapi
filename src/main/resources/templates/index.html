@@ -1,28 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>NBBL VISITERS</title>
+	<title>
+		NBBL-VISITER
+	</title>
 	<style>
-		body {
-			font-family: 'Times New Roman', Times, serif;
-			background-color: #efefef;
-			color: #1a3281;
-			margin: 0;
-			padding: 0;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			min-height: 100vh;
-			font-size: 20px;
-		}
-
 		.form-container {
-			background-color: #f47920;
+			background-color: #ffffff;
 			padding: 20px;
 			border-radius: 5px;
 			box-shadow: 0 2px 4px #1a3281;
 			width: 400px;
+			justify-content: center;
+			align-items: center;
+			margin: 0 auto;
+			height: 73.8lvh;
 		}
 
 		.form-container h1 {
@@ -55,43 +48,70 @@
 			cursor: pointer;
 
 		}
-		
-		table {
-            border-collapse: collapse;
-            width: 100%;
-            border: 1px solid rgb(255, 0, 128);
-        }
 
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            color: #0056b3;
-        }
+		body {
+			display: flex;
+			flex-direction: column;
+			min-height: 100vh;
+			/* Ensures the body takes up at least the full viewport height */
+			margin: 0;
+			padding: 0;
+			background-image: url('/bbps.png');
+			background-size: cover;
+		}
 
-        th {
-            background-color: #f47920;
-        }
-		
-		 .visitors-list {
-            margin-top: 200px;
-            margin-left: 20px;
-            border: #ccc;
-            padding-bottom: 100px;
-        }
+		main {
+			flex: 1;
+			/* Takes up remaining vertical space */
+		}
 
-		.submit-button:hover {
-			background-color: #0056b3;
+		footer {
+			background-color: #131E36;
+			padding: 10px;
+			text-align: center;
+			color: #ffff;
+		}
+
+		.navbar-list {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			/* Remove flex-direction: column; */
+		}
+
+		.navbar-list li {
+			padding: 10px;
+			text-align: center;
+			/* Remove background-color and border properties */
+		}
+
+		.navbar-list li a {
+			text-decoration: none;
+			font-weight: bold;
 		}
 	</style>
 </head>
 
 <body>
+	<div>
+		<nav>
+			<ul class="navbar-list" style="background-color: #F47D27;">
+				<li
+					style="color: #1a3281; text-align: center; font-size: 20px; font-family: Georgia, 'Times New Roman', Times, serif;">
+					<a th:href="@{/}">Registration</a></li>
+				<li
+					style="color: #1a3281; text-align: center; font-size: 20px; font-family: Georgia, 'Times New Roman', Times, serif;">
+					<a th:href="@{/visiter-api/displayVisiters}">All-Visiters</a></li>
 
-
-	<div class="form-container">
-
-		<h1 style="color: #1a3281; text-align: center; font-size: 40px;">NBBL Visitor Form</h1>
+			</ul>
+		</nav>
+	</div>
+	<br>
+	<div class="form-container" style="height: 73.2lvh;">
+		<h1
+			style="color: #1a3281; text-align: center; font-size: 36px; font-family: Georgia, 'Times New Roman', Times, serif;">
+			NBBL Visitor Form</h1>
 		<form id="visitorForm">
 			<div class="form-group">
 				<label for="visiternumber">Visitor Number:</label>
@@ -114,36 +134,19 @@
 				<input type="text" id="visitercompany" name="visitercompany" required>
 			</div>
 			<button class="submit-button" type="submit">Submit</button>
-			<button class="submit-button" id="displayVisitorsButton">Display Visitors</button>
 		</form>
 	</div>
-	
-	<div class="visitors-list" style="padding-left: 10px;">
-		<h2 style="color: #0056b3; text-align: center;">Visitors List</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>Visitor Number</th>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Designation</th>
-					<th>Company</th>
-				</tr>
-			</thead>
-			<tbody id="visitorsTableBody">
-			</tbody>
-		</table>
-	</div>
+	<br>
+
+	<footer>
+		<p style="text-align: center;">Copyright © 2023 by Bharat Bill Payment System. All rights reserved.</p>
+	</footer>
+
 
 	<script>
 		document.getElementById("visitorForm").addEventListener("submit", function (event) {
 			event.preventDefault();
 			saveVisitor();
-		});
-
-		document.getElementById("displayVisitorsButton").addEventListener("click", function (event) {
-			event.preventDefault();
-			fetchAllVisitors();
 		});
 
 		function saveVisitor() {
@@ -173,39 +176,8 @@
 				});
 		}
 
-
-		function fetchAllVisitors() {
-			fetch('/visiter-api/displayVisiters')
-				.then(response => response.json())
-				.then(data => {
-					console.log('All Visitors:', data);
-					displayVisitors(data); 
-				})
-				.catch(error => {
-					console.error('Error fetching visitors:', error);
-				});
-		}
-
-		function displayVisitors(visitors) {
-			const visitorsTableBody = document.getElementById("visitorsTableBody");
-
-			visitorsTableBody.innerHTML = ""; 
-
-			visitors.forEach(visitor => {
-				const row = `
-            <tr>
-                <td>${visitor.visiternumber}</td>
-                <td>${visitor.visitername}</td>
-                <td>${visitor.visiteremail}</td>
-                <td>${visitor.visiterdesignation}</td>
-                <td>${visitor.visitercompany}</td>
-            </tr>
-        `;
-				visitorsTableBody.innerHTML += row;
-			});
-		}
-
 	</script>
+
 </body>
 
 </html>

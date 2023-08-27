@@ -4,18 +4,19 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+//import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.VisitersParameters;
 import com.example.demo.service.VisitersServiceImplementation;
 
 @CrossOrigin(origins = "http://localhost:1234")
-@RestController
+//@RestController
 @Controller
 @RequestMapping("/visiter-api")
 public class CentrallController {
@@ -31,10 +32,19 @@ public class CentrallController {
 	}
 	
 	
+//	@GetMapping("/displayVisiters")
+//	public List<VisitersParameters> getAllVisitors() {
+//		System.out.println(visitersService.getAllVisitors());
+//		return visitersService.getAllVisitors();
+//	}
+	
+//	
 	@GetMapping("/displayVisiters")
-	public List<VisitersParameters> getAllVisitors() {
-		System.out.println(visitersService.getAllVisitors());
-		return visitersService.getAllVisitors();
+	public String getAllVisitors(Model model) {
+		List<VisitersParameters> visitors = visitersService.getAllVisitors();
+		 model.addAttribute("visitors", visitors);
+			System.out.println(visitersService.getAllVisitors());
+		return "visiterdisplay";
 	}
 
 }

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>
+		NBBL-VISITER
+	</title>
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			min-height: 100vh;
+			/* Ensures the body takes up at least the full viewport height */
+			margin: 0;
+			padding: 0;
+			background-image: url('/bbps.png');
+			background-size: cover;
+		}
+
+		main {
+			flex: 1;
+			/* Takes up remaining vertical space */
+		}
+
+		footer {
+			background-color: #131E36;
+			padding: 10px;
+			text-align: center;
+			color: #ffff;
+		}
+
+		.navbar-list {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			/* Remove flex-direction: column; */
+		}
+
+		.navbar-list li {
+			padding: 10px;
+			text-align: center;
+			/* Remove background-color and border properties */
+		}
+
+		.navbar-list li a {
+			text-decoration: none;
+			color: #333;
+			font-weight: bold;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			border: 1px solid #ccc;
+			margin: 20px 0;
+		}
+
+		th,
+		td {
+			border: 1px solid #ccc;
+			padding: 8px;
+			text-align: left;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+		tr:hover {
+			background-color: #ddd;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div>
+		<nav>
+			<ul class="navbar-list" style="background-color: #F47D27;">
+				<li><a th:href="@{/}">Registration</a></li>
+				<li><a th:href="@{/visiter-api/displayVisiters}">All-Visiters</a></li>
+			</ul>
+		</nav>
+	</div>
+	<br>
+	<h1 style="text-align: center; font-family: Georgia, 'Times New Roman', Times, serif;">Visitors List</h1>
+	<div style="padding-left: 30px; padding-right: 30px; height: 68.1lvh;">
+		<table>
+			<tr>
+				<th style="background-color: #1A3281; color: white; font-family: Georgia, 'Times New Roman', Times, serif;">Visitor Number</th>
+				<th style="background-color: #1A3281; color: white; font-family: Georgia, 'Times New Roman', Times, serif;">Visitor Name</th>
+				<th style="background-color: #1A3281; color: white; font-family: Georgia, 'Times New Roman', Times, serif;">Visitor Email</th>
+				<th style="background-color: #1A3281; color: white; font-family: Georgia, 'Times New Roman', Times, serif;">Visitor Designation</th>
+				<th style="background-color: #1A3281; color: white; font-family: Georgia, 'Times New Roman', Times, serif;">Visitor Company</th>
+			</tr>
+
+			<!-- Loop through the visitors and display their information -->
+			<tr th:each="visitor : ${visitors}">
+				<td th:text="${visitor.visiternumber}" style="font-family: 'Times New Roman', Times, serif;">Visitor Number</td>
+				<td th:text="${visitor.visitername}" style="font-family: 'Times New Roman', Times, serif;">Visitor Name</td>
+				<td th:text="${visitor.visiteremail}" style="font-family: 'Times New Roman', Times, serif;">Visitor Email</td>
+				<td th:text="${visitor.visiterdesignation}" style="font-family: 'Times New Roman', Times, serif;">Visitor Designation</td>
+				<td th:text="${visitor.visitercompany}" style="font-family: 'Times New Roman', Times, serif;">Visitor Company</td>
+			</tr>
+		</table>
+	</div>
+	<br>
+	<footer>
+		<p style="text-align: center;">Copyright © 2023 by Bharat Bill Payment System. All rights reserved.</p>
+	</footer>
+</body>
+
+</html>
